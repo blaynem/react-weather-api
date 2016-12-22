@@ -1,4 +1,4 @@
-React Skeleton
+React Weather component from API
 ------
 
-Creating react skeleton.
+Created a react component using an API from OpenWeatherMap.org

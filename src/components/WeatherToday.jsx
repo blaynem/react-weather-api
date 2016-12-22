@@ -12,6 +12,8 @@ var WeatherToday = React.createClass({
 
     var cloudIconURL = (this.props.cloudIcon);
     var cloudIconPic = ("http://openweathermap.org/img/w/" + cloudIconURL +".png");
+    // var todayinUnix = (this.props.date);
+    // var todaydate = new Date(todayinUnix);
 
     return (
       <div style={headingstyles} className="panel-heading">

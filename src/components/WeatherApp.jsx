@@ -23,7 +23,9 @@ var WeatherApp = React.createClass({
         this.setState({
           location: data.city.name,
           todayTemp: Math.round(data.list[0].main.temp - 273.15),
-          cloudIcon: data.list[0].weather[0].icon
+          cloudIcon: data.list[0].weather[0].icon,
+          windSpeed: data.list[0].wind.speed,
+          date: data.list[0].dt
         });
       }.bind(this));
   },
@@ -32,18 +34,18 @@ var WeatherApp = React.createClass({
     var panelBodyStyle = {
       paddingTop: "0"
     }
-    
+
     return (
       <div className="container">
         <div className="panel panel-default">
             <WeatherToday
               headingColor="#79b8af"
               location={this.state.location}
-              date="December 22nd"
+              date={this.state.date}
               cloudIcon={this.state.cloudIcon}
               todayTemp={this.state.todayTemp}
               windDirection="North East"
-              windSpeed="8 MPH"/>
+              windSpeed={this.state.windSpeed} />
           <div style={panelBodyStyle} className="panel-body">
             <WeatherListItem
               listColor="#EBEBEB"

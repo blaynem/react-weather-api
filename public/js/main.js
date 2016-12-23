@@ -20919,7 +20919,8 @@ var WeatherListItem = require('./WeatherListItem.jsx');
 var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
-var city = prompt("Weather for what city?");
+// var city = prompt("Weather for what city?");
+var city = "chicago";
 
 var WeatherApp = React.createClass({
   displayName: 'WeatherApp',
@@ -20929,7 +20930,7 @@ var WeatherApp = React.createClass({
       location: city,
       cloudIcon: '~cloud~',
       todayTemp: 12,
-      windDirection: '',
+      windDirection: 'insert direction',
       windSpeed: 0,
       temps: 0
     };
@@ -20939,10 +20940,24 @@ var WeatherApp = React.createClass({
       console.log("DATA: ", data);
       this.setState({
         location: data.city.name,
-        todayTemp: Math.round(data.list[0].main.temp - 273.15),
-        cloudIcon: data.list[0].weather[0].icon,
+        //This is for todays temperatures
         windSpeed: data.list[0].wind.speed,
-        date: data.list[0].dt
+        tempsDay1: Math.round(data.list[0].main.temp - 273.15),
+        cloudIcon1: data.list[0].weather[0].id,
+        date1: data.list[0].dt_txt.substring(8, 10) + "fix this",
+        //These are for the following days in the 5 day forecast.
+        tempsDay2: Math.round(data.list[8].main.temp - 273.15),
+        cloudIcon2: data.list[8].weather[0].id,
+        date2: data.list[8].dt_txt.substring(8, 10) + "fix this",
+        tempsDay3: Math.round(data.list[16].main.temp - 273.15),
+        cloudIcon3: data.list[16].weather[0].id,
+        date3: data.list[16].dt_txt.substring(8, 10) + "fix this",
+        tempsDay4: Math.round(data.list[24].main.temp - 273.15),
+        cloudIcon4: data.list[24].weather[0].id,
+        date4: data.list[24].dt_txt.substring(8, 10) + "fix this",
+        tempsDay5: Math.round(data.list[32].main.temp - 273.15),
+        cloudIcon5: data.list[32].weather[0].id,
+        date5: data.list[32].dt_txt.substring(8, 10) + "fix this"
       });
     }.bind(this));
   },
@@ -20954,41 +20969,41 @@ var WeatherApp = React.createClass({
 
     return React.createElement(
       'div',
-      { className: 'container' },
+      { className: 'container col-sm-offset-4 col-sm-4' },
       React.createElement(
         'div',
         { className: 'panel panel-default' },
         React.createElement(WeatherToday, {
           headingColor: '#79b8af',
           location: this.state.location,
-          date: this.state.date,
-          cloudIcon: this.state.cloudIcon,
-          todayTemp: this.state.todayTemp,
-          windDirection: 'North East',
+          date: this.state.date1,
+          cloudIcon: this.state.cloudIcon1,
+          todayTemp: this.state.tempsDay1,
+          windDirection: this.state.windDirection,
           windSpeed: this.state.windSpeed }),
         React.createElement(
           'div',
           { style: panelBodyStyle, className: 'panel-body' },
           React.createElement(WeatherListItem, {
             listColor: '#EBEBEB',
-            date: '26 august',
-            cloudIcon: this.state.cloudIcon,
-            temps: this.state.temps }),
+            date: this.state.date2,
+            cloudIcon: this.state.cloudIcon2,
+            temps: this.state.tempsDay2 }),
           React.createElement(WeatherListItem, {
             listColor: '#F5F5F5',
-            date: '27 august',
-            cloudIcon: this.state.cloudIcon,
-            temps: this.state.temps }),
+            date: this.state.date3,
+            cloudIcon: this.state.cloudIcon3,
+            temps: this.state.tempsDay3 }),
           React.createElement(WeatherListItem, {
             listColor: '#EBEBEB',
-            date: '28 august',
-            cloudIcon: this.state.cloudIcon,
-            temps: this.state.temps }),
+            date: this.state.date4,
+            cloudIcon: this.state.cloudIcon4,
+            temps: this.state.tempsDay4 }),
           React.createElement(WeatherListItem, {
             listColor: '#F5F5F5',
-            date: '29 august',
-            cloudIcon: this.state.cloudIcon,
-            temps: this.state.temps })
+            date: this.state.date5,
+            cloudIcon: this.state.cloudIcon5,
+            temps: this.state.tempsDay5 })
         )
       )
     );
@@ -21005,12 +21020,14 @@ var WeatherListItem = React.createClass({
 
   render: function () {
 
+    var todaysTempC = this.props.temps;
+    var todayTempF = todaysTempC * 9 / 5 + 32;
+
     var listStyle = {
       color: "BCBCBC",
       background: this.props.listColor
     };
-    var cloudIconURL = this.props.cloudIcon;
-    var cloudIconPic = "http://openweathermap.org/img/w/" + cloudIconURL + ".png";
+    var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
     return React.createElement(
       "div",
       { style: listStyle, className: "row" },
@@ -21026,11 +21043,7 @@ var WeatherListItem = React.createClass({
       React.createElement(
         "div",
         { className: "col-sm-4" },
-        React.createElement(
-          "h4",
-          null,
-          React.createElement("img", { src: cloudIconPic })
-        )
+        React.createElement("i", { className: cloudIconPic })
       ),
       React.createElement(
         "div",
@@ -21038,8 +21051,10 @@ var WeatherListItem = React.createClass({
         React.createElement(
           "h4",
           null,
-          this.props.temps,
-          " \xB0"
+          todaysTempC,
+          "\xB0 / ",
+          todayTempF,
+          "\xB0"
         )
       )
     );
@@ -21062,10 +21077,16 @@ var WeatherToday = React.createClass({
       background: this.props.headingColor
     };
 
-    var cloudIconURL = this.props.cloudIcon;
-    var cloudIconPic = "http://openweathermap.org/img/w/" + cloudIconURL + ".png";
+    var cloudSize = {
+      fontSize: "40px"
+    };
+
+    // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
+    var cloudIconPic = "wi wi-day-cloudy";
     // var todayinUnix = (this.props.date);
     // var todaydate = new Date(todayinUnix);
+    var todaysTempC = this.props.todayTemp;
+    var todayTempF = todaysTempC * 9 / 5 + 32;
 
     return React.createElement(
       "div",
@@ -21099,11 +21120,7 @@ var WeatherToday = React.createClass({
         React.createElement(
           "div",
           { className: "col-sm-6" },
-          React.createElement(
-            "h3",
-            null,
-            React.createElement("img", { src: cloudIconPic })
-          )
+          React.createElement("i", { style: cloudSize, className: cloudIconPic })
         ),
         React.createElement(
           "div",
@@ -21111,8 +21128,10 @@ var WeatherToday = React.createClass({
           React.createElement(
             "h3",
             null,
-            this.props.todayTemp,
-            " \xB0"
+            todaysTempC,
+            "\xB0 / ",
+            todayTempF,
+            "\xB0"
           )
         )
       ),
@@ -21123,14 +21142,9 @@ var WeatherToday = React.createClass({
           "div",
           { className: "col-sm-6" },
           React.createElement(
-            "span",
+            "h4",
             null,
-            React.createElement(
-              "h4",
-              null,
-              "compass icon ",
-              this.props.windDirection
-            )
+            this.props.windDirection
           )
         ),
         React.createElement(
@@ -21142,7 +21156,8 @@ var WeatherToday = React.createClass({
             React.createElement(
               "h4",
               null,
-              "wind icon ",
+              React.createElement("i", { className: "wi wi-strong-wind" }),
+              " ",
               this.props.windSpeed
             )
           )

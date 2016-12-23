@@ -2,7 +2,6 @@ var React = require('react');
 
 var WeatherToday = React.createClass({
 
-
   render: function() {
 
     var headingstyles = {
@@ -10,10 +9,16 @@ var WeatherToday = React.createClass({
       background: (this.props.headingColor)
     }
 
-    var cloudIconURL = (this.props.cloudIcon);
-    var cloudIconPic = ("http://openweathermap.org/img/w/" + cloudIconURL +".png");
+    var cloudSize = {
+      fontSize: "40px"
+    }
+
+    // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
+    var cloudIconPic = ("wi wi-day-cloudy");
     // var todayinUnix = (this.props.date);
     // var todaydate = new Date(todayinUnix);
+    var todaysTempC = (this.props.todayTemp);
+    var todayTempF = ((todaysTempC) * 9/5 + 32);
 
     return (
       <div style={headingstyles} className="panel-heading">
@@ -28,21 +33,19 @@ var WeatherToday = React.createClass({
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <h3><img src={cloudIconPic} /></h3>
+            <i style={cloudSize} className={cloudIconPic}></i>
           </div>
           <div className="col-sm-6">
-            <h3>{this.props.todayTemp} &deg;</h3>
+            <h3>{todaysTempC}&deg; / {todayTempF}&deg;</h3>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <span>
-              <h4>compass icon {this.props.windDirection}</h4>
-            </span>
+            <h4>{this.props.windDirection}</h4>
           </div>
           <div className="col-sm-6">
             <span>
-              <h4>wind icon {this.props.windSpeed}</h4>
+              <h4><i className="wi wi-strong-wind"></i> {this.props.windSpeed}</h4>
             </span>
           </div>
         </div>

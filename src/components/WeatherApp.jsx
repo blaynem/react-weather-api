@@ -3,7 +3,8 @@ var WeatherListItem = require('./WeatherListItem.jsx');
 var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
-var city = prompt("Weather for what city?");
+// var city = prompt("Weather for what city?");
+var city="chicago"
 
 var WeatherApp = React.createClass({
   getInitialState: function() {
@@ -11,7 +12,7 @@ var WeatherApp = React.createClass({
       location: city,
       cloudIcon: '~cloud~',
       todayTemp: 12,
-      windDirection: '',
+      windDirection: 'insert direction',
       windSpeed: 0,
       temps: 0
     };
@@ -22,10 +23,24 @@ var WeatherApp = React.createClass({
         console.log("DATA: ", data);
         this.setState({
           location: data.city.name,
-          todayTemp: Math.round(data.list[0].main.temp - 273.15),
-          cloudIcon: data.list[0].weather[0].icon,
+          //This is for todays temperatures
           windSpeed: data.list[0].wind.speed,
-          date: data.list[0].dt
+          tempsDay1: Math.round(data.list[0].main.temp - 273.15),
+          cloudIcon1: data.list[0].weather[0].id,
+          date1: data.list[0].dt_txt.substring(8, 10) + "fix this",
+          //These are for the following days in the 5 day forecast.
+          tempsDay2: Math.round(data.list[8].main.temp - 273.15),
+          cloudIcon2: data.list[8].weather[0].id,
+          date2: data.list[8].dt_txt.substring(8, 10) + "fix this",
+          tempsDay3: Math.round(data.list[16].main.temp - 273.15),
+          cloudIcon3: data.list[16].weather[0].id,
+          date3: data.list[16].dt_txt.substring(8, 10) + "fix this",
+          tempsDay4: Math.round(data.list[24].main.temp - 273.15),
+          cloudIcon4: data.list[24].weather[0].id,
+          date4: data.list[24].dt_txt.substring(8, 10) + "fix this",
+          tempsDay5: Math.round(data.list[32].main.temp - 273.15),
+          cloudIcon5: data.list[32].weather[0].id,
+          date5: data.list[32].dt_txt.substring(8, 10) + "fix this"
         });
       }.bind(this));
   },
@@ -36,37 +51,37 @@ var WeatherApp = React.createClass({
     }
 
     return (
-      <div className="container">
+      <div className="container col-sm-offset-4 col-sm-4">
         <div className="panel panel-default">
             <WeatherToday
               headingColor="#79b8af"
               location={this.state.location}
-              date={this.state.date}
-              cloudIcon={this.state.cloudIcon}
-              todayTemp={this.state.todayTemp}
-              windDirection="North East"
+              date={this.state.date1}
+              cloudIcon={this.state.cloudIcon1}
+              todayTemp={this.state.tempsDay1}
+              windDirection={this.state.windDirection}
               windSpeed={this.state.windSpeed} />
           <div style={panelBodyStyle} className="panel-body">
             <WeatherListItem
               listColor="#EBEBEB"
-              date="26 august"
-              cloudIcon={this.state.cloudIcon}
-              temps={this.state.temps}/>
+              date={this.state.date2}
+              cloudIcon={this.state.cloudIcon2}
+              temps={this.state.tempsDay2}/>
             <WeatherListItem
               listColor="#F5F5F5"
-              date="27 august"
-              cloudIcon={this.state.cloudIcon}
-              temps={this.state.temps}/>
+              date={this.state.date3}
+              cloudIcon={this.state.cloudIcon3}
+              temps={this.state.tempsDay3}/>
             <WeatherListItem
               listColor="#EBEBEB"
-              date="28 august"
-              cloudIcon={this.state.cloudIcon}
-              temps={this.state.temps}/>
+              date={this.state.date4}
+              cloudIcon={this.state.cloudIcon4}
+              temps={this.state.tempsDay4}/>
             <WeatherListItem
               listColor="#F5F5F5"
-              date="29 august"
-              cloudIcon={this.state.cloudIcon}
-              temps={this.state.temps}/>
+              date={this.state.date5}
+              cloudIcon={this.state.cloudIcon5}
+              temps={this.state.tempsDay5}/>
           </div>
         </div>
       </div>

@@ -3,9 +3,11 @@ var React = require('react');
 var WeatherListItem = React.createClass({
   render: function() {
 
+    // changes degrees from Celsius to Fahrenheit
     var todaysTempC = (this.props.temps);
     var todayTempF = (Math.round((todaysTempC) * 9/5 + 32));
 
+    // returns the name of the month depending on the given month number
     var monthName = function(month){
       if (month == "01") {
         return "January"
@@ -49,7 +51,7 @@ var WeatherListItem = React.createClass({
       padding: "10px 0 10px 0"
     }
 
-
+    // this will return a different cloud icon depending on the type of weather
     var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
     
     return (

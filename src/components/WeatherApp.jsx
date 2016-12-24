@@ -4,23 +4,20 @@ var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
 //starting city
-var city="portland"
+var city="fargo"
 
 var WeatherApp = React.createClass({
+  // initializes the app with the base cities weather
+  // base city can be changed by replacing var city
   getInitialState: function() {
     return {
-      location: city,
-      cloudIcon: '~cloud~',
-      todayTemp: 12,
-      windDirection: 'insert direction',
-      windSpeed: 0,
-      temps: 0
+      location: city
     };
   },
+  // this gathers the information from the API based on the city that was searched for
   handleSearch: function(search) {
     HTTP.get(search)
       .then(function(data) {
-        console.log("DATA: ", data);
         this.setState({
           location: data.city.name,
           //This is for todays temperatures
@@ -52,10 +49,10 @@ var WeatherApp = React.createClass({
         });
       }.bind(this));
   },
+  // this gathers the information from the API based on the starting city
   componentWillMount: function() {
     HTTP.get(city)
       .then(function(data) {
-        console.log("DATA: ", data);
         this.setState({
           location: data.city.name,
           //This is for todays temperatures
@@ -88,6 +85,8 @@ var WeatherApp = React.createClass({
       }.bind(this));
   },
   render: function() {
+
+    //removes the top padding from the panel body.
     var panelBodyStyle = {
       paddingTop: "0"
     }

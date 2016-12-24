@@ -7,3 +7,5 @@ for(var i=0;i<40;i+= 8){
 }
 
 test();
+
+// Was trying to create a function so I could refactor, haven't figured out how to use it yet.

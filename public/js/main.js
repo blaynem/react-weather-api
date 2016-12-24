@@ -20920,6 +20920,7 @@ var SearchButton = React.createClass({
 	displayName: 'SearchButton',
 
 
+	// this takes the city typed into search bar, searches for it, then replaces it with 'search'
 	handleSubmit: function (e) {
 		e.preventDefault();
 
@@ -20929,7 +20930,8 @@ var SearchButton = React.createClass({
 
 	render: function () {
 
-		searchButtonStyle = {
+		// the search buttons style
+		var searchButtonStyle = {
 			paddingTop: "10px"
 		};
 
@@ -20964,24 +20966,21 @@ var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
 //starting city
-var city = "portland";
+var city = "fargo";
 
 var WeatherApp = React.createClass({
   displayName: 'WeatherApp',
 
+  // initializes the app with the base cities weather
+  // base city can be changed by replacing var city
   getInitialState: function () {
     return {
-      location: city,
-      cloudIcon: '~cloud~',
-      todayTemp: 12,
-      windDirection: 'insert direction',
-      windSpeed: 0,
-      temps: 0
+      location: city
     };
   },
+  // this gathers the information from the API based on the city that was searched for
   handleSearch: function (search) {
     HTTP.get(search).then(function (data) {
-      console.log("DATA: ", data);
       this.setState({
         location: data.city.name,
         //This is for todays temperatures
@@ -21013,9 +21012,9 @@ var WeatherApp = React.createClass({
       });
     }.bind(this));
   },
+  // this gathers the information from the API based on the starting city
   componentWillMount: function () {
     HTTP.get(city).then(function (data) {
-      console.log("DATA: ", data);
       this.setState({
         location: data.city.name,
         //This is for todays temperatures
@@ -21048,6 +21047,8 @@ var WeatherApp = React.createClass({
     }.bind(this));
   },
   render: function () {
+
+    //removes the top padding from the panel body.
     var panelBodyStyle = {
       paddingTop: "0"
     };
@@ -21112,9 +21113,11 @@ var WeatherListItem = React.createClass({
 
   render: function () {
 
+    // changes degrees from Celsius to Fahrenheit
     var todaysTempC = this.props.temps;
     var todayTempF = Math.round(todaysTempC * 9 / 5 + 32);
 
+    // returns the name of the month depending on the given month number
     var monthName = function (month) {
       if (month == "01") {
         return "January";
@@ -21158,6 +21161,7 @@ var WeatherListItem = React.createClass({
       padding: "10px 0 10px 0"
     };
 
+    // this will return a different cloud icon depending on the type of weather
     var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
 
     return React.createElement(
@@ -21262,6 +21266,7 @@ var WeatherToday = React.createClass({
 
     var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
 
+    // returns the name of the month depending on the given month number
     var monthName = function (month) {
       if (month == "01") {
         return "January";
@@ -21290,13 +21295,13 @@ var WeatherToday = React.createClass({
       }
     };
 
+    // this returns the angle and correct compass style depending on the wind direction from the api
     var windDirection = function (deg) {
       var angle = deg;
       var object = {
         direction: "",
         compassClass: ""
       };
-
       if (angle <= "22.5") {
         object.direction = "North";
         object.compassClass = "wi wi-wind wi-towards-n";
@@ -21328,6 +21333,7 @@ var WeatherToday = React.createClass({
       return object;
     };
 
+    // changes degrees from Celsius to Fahrenheit
     var todaysTempC = this.props.todayTemp;
     var todayTempF = Math.round(todaysTempC * 9 / 5 + 32);
 
@@ -21420,8 +21426,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
-//appSize can be changed by using bootstrap sizes ex: col-xs-4, container, etc.
-ReactDOM.render(React.createElement(WeatherApp, { appSize: 'col-xs-4', appColor: '#ec4444' }), document.getElementById('weather'));
+//appSize can be changed by using bootstrap sizes ex: col-sm-12, etc.
+//appColor can be changed by simply replacing with a color of your choice.
+ReactDOM.render(React.createElement(WeatherApp, { appSize: 'col-xs-4', appColor: '#ec4444', startCity: 'fargo' }), document.getElementById('weather'));
 
 },{"./components/WeatherApp.jsx":180,"react":177,"react-dom":26}],184:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');
@@ -21430,9 +21437,7 @@ var apiUrl = '&APPID=a07f627d8d593dfe2e91c117ba8f195d';
 
 var service = {
   get: function (place) {
-    console.log("making request");
     return fetch(baseUrl + place + apiUrl).then(function (response) {
-      console.log("RES: ", response);
       return response.json();
     });
   }

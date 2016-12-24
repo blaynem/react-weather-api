@@ -6,6 +6,10 @@ Created a react component using an API from OpenWeatherMap.org
 
 To try it out clone or download this repo. Run `npm install` and then run `npm start`, open the public folder inside of the project folder, then right-click on `index.html`, select 'Open with', and select your chosen browser.
 
+##You can change the color/size by navigating to `main.jsx` inside of the src folder.
+
+- Replace the content after appSize or appColor with the size/color you'd like.
+
 
 #TODO
 

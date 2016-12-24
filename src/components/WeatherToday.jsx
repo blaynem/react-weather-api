@@ -60,6 +60,7 @@ var WeatherToday = React.createClass({
 
     var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
 
+    // returns the name of the month depending on the given month number
     var monthName = function(month){
       if (month == "01") {
         return "January"
@@ -88,13 +89,13 @@ var WeatherToday = React.createClass({
       }
     }
 
+    // this returns the angle and correct compass style depending on the wind direction from the api
     var windDirection = function(deg) {
       var angle = deg;
       var object = {
         direction: "",
         compassClass: ""
       }
-
       if (angle <= "22.5") {
         object.direction = "North"
         object.compassClass = "wi wi-wind wi-towards-n"
@@ -126,6 +127,7 @@ var WeatherToday = React.createClass({
       return object;
     }
 
+    // changes degrees from Celsius to Fahrenheit
     var todaysTempC = (this.props.todayTemp);
     var todayTempF = (Math.round(todaysTempC * 9/5 + 32));
 

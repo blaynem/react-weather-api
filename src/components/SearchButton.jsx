@@ -2,6 +2,7 @@ var React = require('react');
 
 var SearchButton = React.createClass ({
 
+	// this takes the city typed into search bar, searches for it, then replaces it with 'search'
 	handleSubmit: function(e) {
 		e.preventDefault();
 
@@ -12,7 +13,8 @@ var SearchButton = React.createClass ({
 
 	render: function() {
 
-		searchButtonStyle = {
+		// the search buttons style
+		var searchButtonStyle = {
 			paddingTop: "10px"
 		}
 

@@ -1,6 +1,12 @@
 var React = require('react');
+var SearchButton = require('./SearchButton.jsx');
 
 var WeatherToday = React.createClass({
+
+  // handleSearch: function(search) {
+  //   console.log(search);
+  // },
+
 
   render: function() {
 
@@ -49,7 +55,7 @@ var WeatherToday = React.createClass({
       var object = {
         direction: "",
         compassClass: ""
-      };
+      }
 
       if (angle <= "22.5") {
         object.direction = "North"
@@ -88,14 +94,14 @@ var WeatherToday = React.createClass({
     return (
       <div style={headingstyles} className="panel-heading">
         <div className="row">
-          <div className="col-sm-10">
-            <h4>{this.props.location.toUpperCase()}</h4>
+          <div className="col-sm-6">
+            <h4>{this.props.currentCity.toUpperCase()}</h4>
             <h5>{this.props.dateDay} {monthName(this.props.todayMonth).toUpperCase()} {this.props.dateYear}</h5>
           </div>
-          <div className="col-sm-2">
-            <span className="glyphicon glyphicon-search"></span>
+          <div className="col-sm-6">
+            <SearchButton searchNewCity={this.props.searchNewCity}/>
           </div>
-        </div>
+          </div>
         <div className="row">
           <div className="col-sm-6">
             <i style={cloudSize} className={cloudIconPic}></i>
@@ -104,10 +110,10 @@ var WeatherToday = React.createClass({
             <h3>{todaysTempC}&deg; / {todayTempF}&deg;</h3>
           </div>
         </div>
-        <div className="row">
+        <div className="row"> 
           <div className="col-sm-6">
-              <i className={windDirection(this.props.windDirection).compassClass}></i>
-              <span>{windDirection(this.props.windDirection).direction}</span>
+              <i className={windDirection(this.props.windDegrees).compassClass}></i>
+              <span>{windDirection(this.props.windDegrees).direction}</span>
           </div>
           <div className="col-sm-6">
             <span>

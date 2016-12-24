@@ -20915,12 +20915,51 @@ module.exports = require('./lib/React');
 
 },{}],179:[function(require,module,exports){
 var React = require('react');
+
+var SearchButton = React.createClass({
+	displayName: 'SearchButton',
+
+
+	handleSubmit: function (e) {
+		e.preventDefault();
+
+		this.props.searchNewCity(this.refs.searchInput.value);
+		this.refs.searchInput.value = '';
+	},
+
+	render: function () {
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(
+				'form',
+				{ onSubmit: this.handleSubmit, className: 'search-form' },
+				React.createElement(
+					'div',
+					{ className: 'form-group has-feedback' },
+					React.createElement(
+						'label',
+						{ className: 'sr-only' },
+						'Search'
+					),
+					React.createElement('input', { type: 'text', className: 'form-control', ref: 'searchInput', placeholder: 'Search' }),
+					React.createElement('span', { className: 'glyphicon glyphicon-search form-control-feedback' })
+				)
+			)
+		);
+	}
+});
+
+module.exports = SearchButton;
+
+},{"react":177}],180:[function(require,module,exports){
+var React = require('react');
 var WeatherListItem = require('./WeatherListItem.jsx');
 var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
 // var city = prompt("Weather for what city?");
-var city = "fargo";
+var city = "portland";
 
 var WeatherApp = React.createClass({
   displayName: 'WeatherApp',
@@ -20935,8 +20974,8 @@ var WeatherApp = React.createClass({
       temps: 0
     };
   },
-  componentWillMount: function () {
-    HTTP.get(city).then(function (data) {
+  handleSearch: function (search) {
+    HTTP.get(search).then(function (data) {
       console.log("DATA: ", data);
       this.setState({
         location: data.city.name,
@@ -20947,6 +20986,7 @@ var WeatherApp = React.createClass({
         dateDay1: data.list[0].dt_txt.substring(8, 10),
         dateMonth1: data.list[0].dt_txt.substring(5, 7),
         dateYear1: data.list[0].dt_txt.substring(0, 4),
+        windDirection: data.list[0].wind.deg,
 
         //These are for the following days in the 5 day forecast.
         tempsDay2: Math.round(data.list[8].main.temp - 273.15),
@@ -20968,7 +21008,40 @@ var WeatherApp = React.createClass({
       });
     }.bind(this));
   },
+  componentWillMount: function () {
+    HTTP.get(city).then(function (data) {
+      console.log("DATA: ", data);
+      this.setState({
+        location: data.city.name,
+        //This is for todays temperatures
+        windSpeed: Math.round(data.list[0].wind.speed / 0.44704),
+        tempsDay1: Math.round(data.list[0].main.temp - 273.15),
+        cloudIcon1: data.list[0].weather[0].id,
+        dateDay1: data.list[0].dt_txt.substring(8, 10),
+        dateMonth1: data.list[0].dt_txt.substring(5, 7),
+        dateYear1: data.list[0].dt_txt.substring(0, 4),
+        windDirection: data.list[0].wind.deg,
 
+        //These are for the following days in the 5 day forecast.
+        tempsDay2: Math.round(data.list[8].main.temp - 273.15),
+        cloudIcon2: data.list[8].weather[0].id,
+        dateDay2: data.list[8].dt_txt.substring(8, 10),
+        dateMonth2: data.list[8].dt_txt.substring(5, 7),
+        tempsDay3: Math.round(data.list[16].main.temp - 273.15),
+        cloudIcon3: data.list[16].weather[0].id,
+        dateDay3: data.list[16].dt_txt.substring(8, 10),
+        dateMonth3: data.list[16].dt_txt.substring(5, 7),
+        tempsDay4: Math.round(data.list[24].main.temp - 273.15),
+        cloudIcon4: data.list[24].weather[0].id,
+        dateDay4: data.list[24].dt_txt.substring(8, 10),
+        dateMonth4: data.list[24].dt_txt.substring(5, 7),
+        tempsDay5: Math.round(data.list[32].main.temp - 273.15),
+        cloudIcon5: data.list[32].weather[0].id,
+        dateDay5: data.list[32].dt_txt.substring(8, 10),
+        dateMonth5: data.list[32].dt_txt.substring(5, 7)
+      });
+    }.bind(this));
+  },
   render: function () {
     var panelBodyStyle = {
       paddingTop: "0"
@@ -20982,14 +21055,15 @@ var WeatherApp = React.createClass({
         { className: 'panel panel-default' },
         React.createElement(WeatherToday, {
           headingColor: '#79b8af',
-          location: this.state.location,
+          currentCity: this.state.location,
           dateDay: this.state.dateDay1,
           dateMonth: this.state.dateMonth1,
           dateYear: this.state.dateYear1,
           cloudIcon: this.state.cloudIcon1,
           todayTemp: this.state.tempsDay1,
-          windDirection: this.state.windDirection,
-          windSpeed: this.state.windSpeed }),
+          windDegrees: this.state.windDirection,
+          windSpeed: this.state.windSpeed,
+          searchNewCity: this.handleSearch }),
         React.createElement(
           'div',
           { style: panelBodyStyle, className: 'panel-body' },
@@ -21025,7 +21099,7 @@ var WeatherApp = React.createClass({
 
 module.exports = WeatherApp;
 
-},{"../services/httpservice":183,"./WeatherListItem.jsx":180,"./WeatherToday.jsx":181,"react":177}],180:[function(require,module,exports){
+},{"../services/httpservice":184,"./WeatherListItem.jsx":181,"./WeatherToday.jsx":182,"react":177}],181:[function(require,module,exports){
 var React = require('react');
 
 var WeatherListItem = React.createClass({
@@ -21107,11 +21181,17 @@ var WeatherListItem = React.createClass({
 
 module.exports = WeatherListItem;
 
-},{"react":177}],181:[function(require,module,exports){
+},{"react":177}],182:[function(require,module,exports){
 var React = require('react');
+var SearchButton = require('./SearchButton.jsx');
 
 var WeatherToday = React.createClass({
-  displayName: "WeatherToday",
+  displayName: 'WeatherToday',
+
+
+  // handleSearch: function(search) {
+  //   console.log(search);
+  // },
 
 
   render: function () {
@@ -21198,81 +21278,81 @@ var WeatherToday = React.createClass({
     var todayTempF = Math.round(todaysTempC * 9 / 5 + 32);
 
     return React.createElement(
-      "div",
-      { style: headingstyles, className: "panel-heading" },
+      'div',
+      { style: headingstyles, className: 'panel-heading' },
       React.createElement(
-        "div",
-        { className: "row" },
+        'div',
+        { className: 'row' },
         React.createElement(
-          "div",
-          { className: "col-sm-10" },
+          'div',
+          { className: 'col-sm-6' },
           React.createElement(
-            "h4",
+            'h4',
             null,
-            this.props.location.toUpperCase()
+            this.props.currentCity.toUpperCase()
           ),
           React.createElement(
-            "h5",
+            'h5',
             null,
             this.props.dateDay,
-            " ",
+            ' ',
             monthName(this.props.todayMonth).toUpperCase(),
-            " ",
+            ' ',
             this.props.dateYear
           )
         ),
         React.createElement(
-          "div",
-          { className: "col-sm-2" },
-          React.createElement("span", { className: "glyphicon glyphicon-search" })
+          'div',
+          { className: 'col-sm-6' },
+          React.createElement(SearchButton, { searchNewCity: this.props.searchNewCity })
         )
       ),
       React.createElement(
-        "div",
-        { className: "row" },
+        'div',
+        { className: 'row' },
         React.createElement(
-          "div",
-          { className: "col-sm-6" },
-          React.createElement("i", { style: cloudSize, className: cloudIconPic })
+          'div',
+          { className: 'col-sm-6' },
+          React.createElement('i', { style: cloudSize, className: cloudIconPic })
         ),
         React.createElement(
-          "div",
-          { className: "col-sm-6" },
+          'div',
+          { className: 'col-sm-6' },
           React.createElement(
-            "h3",
+            'h3',
             null,
             todaysTempC,
-            "\xB0 / ",
+            '\xB0 / ',
             todayTempF,
-            "\xB0"
+            '\xB0'
           )
         )
       ),
       React.createElement(
-        "div",
-        { className: "row" },
+        'div',
+        { className: 'row' },
         React.createElement(
-          "div",
-          { className: "col-sm-6" },
-          React.createElement("i", { className: windDirection(this.props.windDirection).compassClass }),
+          'div',
+          { className: 'col-sm-6' },
+          React.createElement('i', { className: windDirection(this.props.windDegrees).compassClass }),
           React.createElement(
-            "span",
+            'span',
             null,
-            windDirection(this.props.windDirection).direction
+            windDirection(this.props.windDegrees).direction
           )
         ),
         React.createElement(
-          "div",
-          { className: "col-sm-6" },
+          'div',
+          { className: 'col-sm-6' },
           React.createElement(
-            "span",
+            'span',
             null,
-            React.createElement("i", { className: "wi wi-strong-wind" }),
+            React.createElement('i', { className: 'wi wi-strong-wind' }),
             React.createElement(
-              "span",
+              'span',
               null,
               this.props.windSpeed,
-              " MPH"
+              ' MPH'
             )
           )
         )
@@ -21283,14 +21363,14 @@ var WeatherToday = React.createClass({
 
 module.exports = WeatherToday;
 
-},{"react":177}],182:[function(require,module,exports){
+},{"./SearchButton.jsx":179,"react":177}],183:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
 ReactDOM.render(React.createElement(WeatherApp, null), document.getElementById('weather'));
 
-},{"./components/WeatherApp.jsx":179,"react":177,"react-dom":26}],183:[function(require,module,exports){
+},{"./components/WeatherApp.jsx":180,"react":177,"react-dom":26}],184:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');
 var baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/weather?q=';
 var apiUrl = '&APPID=a07f627d8d593dfe2e91c117ba8f195d';
@@ -21307,4 +21387,4 @@ var service = {
 
 module.exports = service;
 
-},{"whatwg-fetch":178}]},{},[182]);
+},{"whatwg-fetch":178}]},{},[183]);

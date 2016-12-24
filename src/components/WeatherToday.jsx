@@ -15,17 +15,82 @@ var WeatherToday = React.createClass({
 
     // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
     var cloudIconPic = ("wi wi-day-cloudy");
-    // var todayinUnix = (this.props.date);
-    // var todaydate = new Date(todayinUnix);
+
+    var monthName = function(month){
+      if (month == "01") {
+        return "January"
+      } else if (month == "02") {
+        return "February"
+      } else if (month == "03") {
+        return "March"
+      } else if (month == "04") {
+        return "April"
+      } else if (month == "05") {
+        return "May"
+      } else if (month == "06") {
+        return "June"
+      } else if (month == "07") {
+        return "July"
+      } else if (month == "08") {
+        return "August"
+      } else if (month == "09") {
+        return "September"
+      } else if (month == "10") {
+        return "October"
+      } else if (month == "11") {
+        return "November"
+      } else {
+        return "December"
+      }
+    }
+
+    var windDirection = function(deg) {
+      var angle = deg;
+      var object = {
+        direction: "",
+        compassClass: ""
+      };
+
+      if (angle <= "22.5") {
+        object.direction = "North"
+        object.compassClass = "wi wi-wind wi-towards-n"
+      } else if (angle <= "67.5") {
+        object.direction = "North East"
+        object.compassClass = "wi wi-wind wi-towards-ne"
+      } else if (angle <= "112.5") {
+        object.direction = "East"
+        object.compassClass = "wi wi-wind wi-towards-e"
+      } else if (angle <= "157.5") {
+        object.direction = "South East"
+        object.compassClass = "wi wi-wind wi-towards-se"
+      } else if (angle <= "202.5") {
+        object.direction = "South"
+        object.compassClass = "wi wi-wind wi-towards-s"
+      } else if (angle <= "247.5") {
+        object.direction = "South West"
+        object.compassClass = "wi wi-wind wi-towards-sw"
+      } else if (angle <= "292.5") {
+        object.direction = "West"
+        object.compassClass = "wi wi-wind wi-towards-w"
+      } else if (angle <= "337.5") {
+        object.direction = "North West"
+        object.compassClass = "wi wi-wind wi-towards-nw"
+      } else {
+        object.direction = "North"
+        object.compassClass = "wi wi-wind wi-towards-n"
+      }
+      return object;
+    }
+
     var todaysTempC = (this.props.todayTemp);
-    var todayTempF = ((todaysTempC) * 9/5 + 32);
+    var todayTempF = (Math.round(todaysTempC * 9/5 + 32));
 
     return (
       <div style={headingstyles} className="panel-heading">
         <div className="row">
           <div className="col-sm-10">
-            <h4>{this.props.location}</h4>
-            <h5>{this.props.date}</h5>
+            <h4>{this.props.location.toUpperCase()}</h4>
+            <h5>{this.props.dateDay} {monthName(this.props.todayMonth).toUpperCase()} {this.props.dateYear}</h5>
           </div>
           <div className="col-sm-2">
             <span className="glyphicon glyphicon-search"></span>
@@ -41,11 +106,13 @@ var WeatherToday = React.createClass({
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <h4>{this.props.windDirection}</h4>
+              <i className={windDirection(this.props.windDirection).compassClass}></i>
+              <span>{windDirection(this.props.windDirection).direction}</span>
           </div>
           <div className="col-sm-6">
             <span>
-              <h4><i className="wi wi-strong-wind"></i> {this.props.windSpeed}</h4>
+              <i className="wi wi-strong-wind"></i>
+              <span>{this.props.windSpeed} MPH</span>
             </span>
           </div>
         </div>

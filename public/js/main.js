@@ -20920,7 +20920,7 @@ var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
 // var city = prompt("Weather for what city?");
-var city = "chicago";
+var city = "fargo";
 
 var WeatherApp = React.createClass({
   displayName: 'WeatherApp',
@@ -20941,23 +20941,30 @@ var WeatherApp = React.createClass({
       this.setState({
         location: data.city.name,
         //This is for todays temperatures
-        windSpeed: data.list[0].wind.speed,
+        windSpeed: Math.round(data.list[0].wind.speed / 0.44704),
         tempsDay1: Math.round(data.list[0].main.temp - 273.15),
         cloudIcon1: data.list[0].weather[0].id,
-        date1: data.list[0].dt_txt.substring(8, 10) + "fix this",
+        dateDay1: data.list[0].dt_txt.substring(8, 10),
+        dateMonth1: data.list[0].dt_txt.substring(5, 7),
+        dateYear1: data.list[0].dt_txt.substring(0, 4),
+
         //These are for the following days in the 5 day forecast.
         tempsDay2: Math.round(data.list[8].main.temp - 273.15),
         cloudIcon2: data.list[8].weather[0].id,
-        date2: data.list[8].dt_txt.substring(8, 10) + "fix this",
+        dateDay2: data.list[8].dt_txt.substring(8, 10),
+        dateMonth2: data.list[8].dt_txt.substring(5, 7),
         tempsDay3: Math.round(data.list[16].main.temp - 273.15),
         cloudIcon3: data.list[16].weather[0].id,
-        date3: data.list[16].dt_txt.substring(8, 10) + "fix this",
+        dateDay3: data.list[16].dt_txt.substring(8, 10),
+        dateMonth3: data.list[16].dt_txt.substring(5, 7),
         tempsDay4: Math.round(data.list[24].main.temp - 273.15),
         cloudIcon4: data.list[24].weather[0].id,
-        date4: data.list[24].dt_txt.substring(8, 10) + "fix this",
+        dateDay4: data.list[24].dt_txt.substring(8, 10),
+        dateMonth4: data.list[24].dt_txt.substring(5, 7),
         tempsDay5: Math.round(data.list[32].main.temp - 273.15),
         cloudIcon5: data.list[32].weather[0].id,
-        date5: data.list[32].dt_txt.substring(8, 10) + "fix this"
+        dateDay5: data.list[32].dt_txt.substring(8, 10),
+        dateMonth5: data.list[32].dt_txt.substring(5, 7)
       });
     }.bind(this));
   },
@@ -20976,7 +20983,9 @@ var WeatherApp = React.createClass({
         React.createElement(WeatherToday, {
           headingColor: '#79b8af',
           location: this.state.location,
-          date: this.state.date1,
+          dateDay: this.state.dateDay1,
+          dateMonth: this.state.dateMonth1,
+          dateYear: this.state.dateYear1,
           cloudIcon: this.state.cloudIcon1,
           todayTemp: this.state.tempsDay1,
           windDirection: this.state.windDirection,
@@ -20986,22 +20995,26 @@ var WeatherApp = React.createClass({
           { style: panelBodyStyle, className: 'panel-body' },
           React.createElement(WeatherListItem, {
             listColor: '#EBEBEB',
-            date: this.state.date2,
+            dateDay: this.state.dateDay2,
+            dateMonth: this.state.dateMonth2,
             cloudIcon: this.state.cloudIcon2,
             temps: this.state.tempsDay2 }),
           React.createElement(WeatherListItem, {
             listColor: '#F5F5F5',
-            date: this.state.date3,
+            dateDay: this.state.dateDay3,
+            dateMonth: this.state.dateMonth3,
             cloudIcon: this.state.cloudIcon3,
             temps: this.state.tempsDay3 }),
           React.createElement(WeatherListItem, {
             listColor: '#EBEBEB',
-            date: this.state.date4,
+            dateDay: this.state.dateDay4,
+            dateMonth: this.state.dateMonth4,
             cloudIcon: this.state.cloudIcon4,
             temps: this.state.tempsDay4 }),
           React.createElement(WeatherListItem, {
             listColor: '#F5F5F5',
-            date: this.state.date5,
+            dateDay: this.state.dateDay5,
+            dateMonth: this.state.dateMonth5,
             cloudIcon: this.state.cloudIcon5,
             temps: this.state.tempsDay5 })
         )
@@ -21021,13 +21034,42 @@ var WeatherListItem = React.createClass({
   render: function () {
 
     var todaysTempC = this.props.temps;
-    var todayTempF = todaysTempC * 9 / 5 + 32;
+    var todayTempF = Math.round(todaysTempC * 9 / 5 + 32);
+
+    var monthName = function (month) {
+      if (month == "01") {
+        return "January";
+      } else if (month == "02") {
+        return "February";
+      } else if (month == "03") {
+        return "March";
+      } else if (month == "04") {
+        return "April";
+      } else if (month == "05") {
+        return "May";
+      } else if (month == "06") {
+        return "June";
+      } else if (month == "07") {
+        return "July";
+      } else if (month == "08") {
+        return "August";
+      } else if (month == "09") {
+        return "September";
+      } else if (month == "10") {
+        return "October";
+      } else if (month == "11") {
+        return "November";
+      } else {
+        return "December";
+      }
+    };
 
     var listStyle = {
       color: "BCBCBC",
       background: this.props.listColor
     };
     var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
+
     return React.createElement(
       "div",
       { style: listStyle, className: "row" },
@@ -21037,7 +21079,9 @@ var WeatherListItem = React.createClass({
         React.createElement(
           "h4",
           null,
-          this.props.date
+          this.props.dateDay,
+          " ",
+          monthName(this.props.dateMonth)
         )
       ),
       React.createElement(
@@ -21083,10 +21127,75 @@ var WeatherToday = React.createClass({
 
     // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
     var cloudIconPic = "wi wi-day-cloudy";
-    // var todayinUnix = (this.props.date);
-    // var todaydate = new Date(todayinUnix);
+
+    var monthName = function (month) {
+      if (month == "01") {
+        return "January";
+      } else if (month == "02") {
+        return "February";
+      } else if (month == "03") {
+        return "March";
+      } else if (month == "04") {
+        return "April";
+      } else if (month == "05") {
+        return "May";
+      } else if (month == "06") {
+        return "June";
+      } else if (month == "07") {
+        return "July";
+      } else if (month == "08") {
+        return "August";
+      } else if (month == "09") {
+        return "September";
+      } else if (month == "10") {
+        return "October";
+      } else if (month == "11") {
+        return "November";
+      } else {
+        return "December";
+      }
+    };
+
+    var windDirection = function (deg) {
+      var angle = deg;
+      var object = {
+        direction: "",
+        compassClass: ""
+      };
+
+      if (angle <= "22.5") {
+        object.direction = "North";
+        object.compassClass = "wi wi-wind wi-towards-n";
+      } else if (angle <= "67.5") {
+        object.direction = "North East";
+        object.compassClass = "wi wi-wind wi-towards-ne";
+      } else if (angle <= "112.5") {
+        object.direction = "East";
+        object.compassClass = "wi wi-wind wi-towards-e";
+      } else if (angle <= "157.5") {
+        object.direction = "South East";
+        object.compassClass = "wi wi-wind wi-towards-se";
+      } else if (angle <= "202.5") {
+        object.direction = "South";
+        object.compassClass = "wi wi-wind wi-towards-s";
+      } else if (angle <= "247.5") {
+        object.direction = "South West";
+        object.compassClass = "wi wi-wind wi-towards-sw";
+      } else if (angle <= "292.5") {
+        object.direction = "West";
+        object.compassClass = "wi wi-wind wi-towards-w";
+      } else if (angle <= "337.5") {
+        object.direction = "North West";
+        object.compassClass = "wi wi-wind wi-towards-nw";
+      } else {
+        object.direction = "North";
+        object.compassClass = "wi wi-wind wi-towards-n";
+      }
+      return object;
+    };
+
     var todaysTempC = this.props.todayTemp;
-    var todayTempF = todaysTempC * 9 / 5 + 32;
+    var todayTempF = Math.round(todaysTempC * 9 / 5 + 32);
 
     return React.createElement(
       "div",
@@ -21100,12 +21209,16 @@ var WeatherToday = React.createClass({
           React.createElement(
             "h4",
             null,
-            this.props.location
+            this.props.location.toUpperCase()
           ),
           React.createElement(
             "h5",
             null,
-            this.props.date
+            this.props.dateDay,
+            " ",
+            monthName(this.props.todayMonth).toUpperCase(),
+            " ",
+            this.props.dateYear
           )
         ),
         React.createElement(
@@ -21141,10 +21254,11 @@ var WeatherToday = React.createClass({
         React.createElement(
           "div",
           { className: "col-sm-6" },
+          React.createElement("i", { className: windDirection(this.props.windDirection).compassClass }),
           React.createElement(
-            "h4",
+            "span",
             null,
-            this.props.windDirection
+            windDirection(this.props.windDirection).direction
           )
         ),
         React.createElement(
@@ -21153,12 +21267,12 @@ var WeatherToday = React.createClass({
           React.createElement(
             "span",
             null,
+            React.createElement("i", { className: "wi wi-strong-wind" }),
             React.createElement(
-              "h4",
+              "span",
               null,
-              React.createElement("i", { className: "wi wi-strong-wind" }),
-              " ",
-              this.props.windSpeed
+              this.props.windSpeed,
+              " MPH"
             )
           )
         )

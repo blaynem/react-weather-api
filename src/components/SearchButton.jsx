@@ -11,8 +11,13 @@ var SearchButton = React.createClass ({
 
 
 	render: function() {
+
+		searchButtonStyle = {
+			paddingTop: "10px"
+		}
+
 		return (
-		    <div>
+		    <div style={searchButtonStyle}>
 		        <form onSubmit={this.handleSubmit} className="search-form">
 		            <div className="form-group has-feedback">
 		        		<label className="sr-only">Search</label>

@@ -3,7 +3,7 @@ var WeatherListItem = require('./WeatherListItem.jsx');
 var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
-// var city = prompt("Weather for what city?");
+//starting city
 var city="portland"
 
 var WeatherApp = React.createClass({
@@ -93,10 +93,10 @@ var WeatherApp = React.createClass({
     }
 
     return (
-      <div className="container col-sm-offset-4 col-sm-4">
+      <div className={this.props.appSize}>
         <div className="panel panel-default">
             <WeatherToday
-              headingColor="#79b8af"
+              headingColor={this.props.appColor}
               currentCity={this.state.location}
               dateDay={this.state.dateDay1}
               dateMonth={this.state.dateMonth1}

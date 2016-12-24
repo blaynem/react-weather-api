@@ -20928,9 +20928,14 @@ var SearchButton = React.createClass({
 	},
 
 	render: function () {
+
+		searchButtonStyle = {
+			paddingTop: "10px"
+		};
+
 		return React.createElement(
 			'div',
-			null,
+			{ style: searchButtonStyle },
 			React.createElement(
 				'form',
 				{ onSubmit: this.handleSubmit, className: 'search-form' },
@@ -20958,7 +20963,7 @@ var WeatherListItem = require('./WeatherListItem.jsx');
 var WeatherToday = require('./WeatherToday.jsx');
 var HTTP = require('../services/httpservice');
 
-// var city = prompt("Weather for what city?");
+//starting city
 var city = "portland";
 
 var WeatherApp = React.createClass({
@@ -21049,12 +21054,12 @@ var WeatherApp = React.createClass({
 
     return React.createElement(
       'div',
-      { className: 'container col-sm-offset-4 col-sm-4' },
+      { className: this.props.appSize },
       React.createElement(
         'div',
         { className: 'panel panel-default' },
         React.createElement(WeatherToday, {
-          headingColor: '#79b8af',
+          headingColor: this.props.appColor,
           currentCity: this.state.location,
           dateDay: this.state.dateDay1,
           dateMonth: this.state.dateMonth1,
@@ -21140,8 +21145,19 @@ var WeatherListItem = React.createClass({
 
     var listStyle = {
       color: "BCBCBC",
-      background: this.props.listColor
+      height: "40px",
+      background: this.props.listColor,
+      textAlign: "center",
+      fontSize: "1.4em"
     };
+
+    var fontSizes = {
+      fontSize: "1em"
+    };
+    var cloudStyle = {
+      padding: "10px 0 10px 0"
+    };
+
     var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
 
     return React.createElement(
@@ -21149,10 +21165,10 @@ var WeatherListItem = React.createClass({
       { style: listStyle, className: "row" },
       React.createElement(
         "div",
-        { className: "col-sm-4" },
+        { className: "col-xs-4" },
         React.createElement(
           "h4",
-          null,
+          { style: fontSizes },
           this.props.dateDay,
           " ",
           monthName(this.props.dateMonth)
@@ -21160,15 +21176,15 @@ var WeatherListItem = React.createClass({
       ),
       React.createElement(
         "div",
-        { className: "col-sm-4" },
-        React.createElement("i", { className: cloudIconPic })
+        { className: "col-xs-4" },
+        React.createElement("i", { style: cloudStyle, className: cloudIconPic })
       ),
       React.createElement(
         "div",
-        { className: "col-sm-4" },
+        { className: "col-xs-4" },
         React.createElement(
           "h4",
-          null,
+          { style: fontSizes },
           todaysTempC,
           "\xB0 / ",
           todayTempF,
@@ -21198,15 +21214,53 @@ var WeatherToday = React.createClass({
 
     var headingstyles = {
       color: "white",
-      background: this.props.headingColor
+      background: this.props.headingColor,
+      paddingTop: "0"
+    };
+
+    var currentCityStyle = {
+      textAlign: "left"
+    };
+
+    var currentCityh4 = {
+      marginBottom: "0",
+      fontSize: "1.4em",
+      fontWeight: "bold"
+    };
+
+    var currentCityh5 = {
+      marginTop: '5px'
     };
 
     var cloudSize = {
-      fontSize: "40px"
+      textAlign: "left",
+      paddingLeft: "40px"
+      // fontSize: "1.4em"
     };
 
-    // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
-    var cloudIconPic = "wi wi-day-cloudy";
+    var tempStyle = {
+      fontSize: "1em",
+      marginTop: "15px",
+      paddingRight: "25px",
+      textAlign: "right",
+      fontWeight: "bold"
+    };
+
+    var currentTempStyle = {
+      fontSize: "8em"
+    };
+
+    var windStyle = {
+      fontSize: "1.4em",
+      paddingLeft: "25px"
+    };
+
+    var windSpeedStyle = {
+      textAlign: "right",
+      paddingRight: "40px"
+    };
+
+    var cloudIconPic = "wi wi-owm-" + this.props.cloudIcon;
 
     var monthName = function (month) {
       if (month == "01") {
@@ -21285,15 +21339,15 @@ var WeatherToday = React.createClass({
         { className: 'row' },
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { style: currentCityStyle, className: 'col-xs-6' },
           React.createElement(
             'h4',
-            null,
+            { style: currentCityh4 },
             this.props.currentCity.toUpperCase()
           ),
           React.createElement(
             'h5',
-            null,
+            { style: currentCityh5 },
             this.props.dateDay,
             ' ',
             monthName(this.props.todayMonth).toUpperCase(),
@@ -21303,26 +21357,24 @@ var WeatherToday = React.createClass({
         ),
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { className: 'col-xs-6' },
           React.createElement(SearchButton, { searchNewCity: this.props.searchNewCity })
         )
       ),
       React.createElement(
         'div',
-        { className: 'row' },
+        { style: currentTempStyle, className: 'row' },
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
-          React.createElement('i', { style: cloudSize, className: cloudIconPic })
+          { style: cloudSize, className: 'col-xs-6' },
+          React.createElement('i', { className: cloudIconPic })
         ),
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { className: 'col-xs-6' },
           React.createElement(
             'h3',
-            null,
-            todaysTempC,
-            '\xB0 / ',
+            { style: tempStyle },
             todayTempF,
             '\xB0'
           )
@@ -21330,10 +21382,10 @@ var WeatherToday = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'row' },
+        { style: windStyle, className: 'row' },
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { className: 'col-xs-6' },
           React.createElement('i', { className: windDirection(this.props.windDegrees).compassClass }),
           React.createElement(
             'span',
@@ -21343,7 +21395,7 @@ var WeatherToday = React.createClass({
         ),
         React.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { style: windSpeedStyle, className: 'col-xs-6' },
           React.createElement(
             'span',
             null,
@@ -21368,7 +21420,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
-ReactDOM.render(React.createElement(WeatherApp, null), document.getElementById('weather'));
+//appSize can be changed by using bootstrap sizes ex: col-xs-4, container, etc.
+ReactDOM.render(React.createElement(WeatherApp, { appSize: 'col-xs-4', appColor: '#ec4444' }), document.getElementById('weather'));
 
 },{"./components/WeatherApp.jsx":180,"react":177,"react-dom":26}],184:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');

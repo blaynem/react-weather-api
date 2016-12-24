@@ -12,15 +12,53 @@ var WeatherToday = React.createClass({
 
     var headingstyles = {
       color: "white",
-      background: (this.props.headingColor)
+      background: (this.props.headingColor),
+      paddingTop: "0"
+    }
+
+    var currentCityStyle = {
+      textAlign: "left"
+    }
+
+    var currentCityh4 = {
+      marginBottom: "0",
+      fontSize: "1.4em",
+      fontWeight: "bold"
+    }
+
+    var currentCityh5 = {
+      marginTop: '5px'
     }
 
     var cloudSize = {
-      fontSize: "40px"
+      textAlign: "left",
+      paddingLeft: "40px"
+      // fontSize: "1.4em"
     }
 
-    // var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
-    var cloudIconPic = ("wi wi-day-cloudy");
+    var tempStyle = {
+      fontSize: "1em",
+      marginTop: "15px",
+      paddingRight: "25px",
+      textAlign: "right",
+      fontWeight: "bold"
+    }
+
+    var currentTempStyle = {
+      fontSize: "8em"
+    }
+
+    var windStyle = {
+      fontSize: "1.4em",
+      paddingLeft: "25px"
+    }
+
+    var windSpeedStyle = {
+      textAlign: "right",
+      paddingRight: "40px"
+    }
+
+    var cloudIconPic = ("wi wi-owm-" + (this.props.cloudIcon));
 
     var monthName = function(month){
       if (month == "01") {
@@ -94,28 +132,28 @@ var WeatherToday = React.createClass({
     return (
       <div style={headingstyles} className="panel-heading">
         <div className="row">
-          <div className="col-sm-6">
-            <h4>{this.props.currentCity.toUpperCase()}</h4>
-            <h5>{this.props.dateDay} {monthName(this.props.todayMonth).toUpperCase()} {this.props.dateYear}</h5>
+          <div style={currentCityStyle} className="col-xs-6">
+            <h4 style={currentCityh4}>{this.props.currentCity.toUpperCase()}</h4>
+            <h5 style={currentCityh5}>{this.props.dateDay} {monthName(this.props.todayMonth).toUpperCase()} {this.props.dateYear}</h5>
           </div>
-          <div className="col-sm-6">
+          <div className="col-xs-6">
             <SearchButton searchNewCity={this.props.searchNewCity}/>
           </div>
           </div>
-        <div className="row">
-          <div className="col-sm-6">
-            <i style={cloudSize} className={cloudIconPic}></i>
+        <div style={currentTempStyle} className="row">
+          <div style={cloudSize} className="col-xs-6">
+            <i className={cloudIconPic}></i>
           </div>
-          <div className="col-sm-6">
-            <h3>{todaysTempC}&deg; / {todayTempF}&deg;</h3>
+          <div className="col-xs-6">
+            <h3 style={tempStyle}>{todayTempF}&deg;</h3>
           </div>
         </div>
-        <div className="row"> 
-          <div className="col-sm-6">
+        <div style={windStyle} className="row"> 
+          <div className="col-xs-6">
               <i className={windDirection(this.props.windDegrees).compassClass}></i>
               <span>{windDirection(this.props.windDegrees).direction}</span>
           </div>
-          <div className="col-sm-6">
+          <div style={windSpeedStyle} className="col-xs-6">
             <span>
               <i className="wi wi-strong-wind"></i>
               <span>{this.props.windSpeed} MPH</span>

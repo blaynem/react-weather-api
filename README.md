@@ -9,11 +9,13 @@ To try it out clone or download this repo. Run `npm install` and then run `npm s
 
 #TODO
 
-Need to fix how the dates work.
-
-Make sure you can search a city. (based on geolocation, then you can choose city)
-
 REFACTOR IT FOR THE LOVE OF OH MY GOODNESS.
 
 ###Styling
 - General Styling. (maybe let backgroundColor change based on temps, maybe let the background of the page in general change depending on conditions.)
+
+
+
+###Credits
+
+I did grab the awesome bootstrap search bars rollover feature from [here](http://bootsnipp.com/snippets/featured/expanding-search-button-in-css). Big thanks to NoelDavies for creating it.

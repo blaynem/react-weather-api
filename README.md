@@ -9,10 +9,6 @@ To try it out clone or download this repo. Run `npm install` and then run `npm s
 
 #TODO
 
-Need to fix how the dates work.
-
-Make sure you can search a city. (based on geolocation, then you can choose city)
-
 REFACTOR IT FOR THE LOVE OF OH MY GOODNESS.
 
 ###Styling

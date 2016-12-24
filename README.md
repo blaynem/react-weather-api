@@ -18,4 +18,4 @@ REFACTOR IT FOR THE LOVE OF OH MY GOODNESS.
 
 ###Credits
 
-I did grab the awesome bootstrap search bars rollover feature from [here](http://bootsnipp.com/snippets/featured/expanding-search-button-in-css)
+I did grab the awesome bootstrap search bars rollover feature from [here](http://bootsnipp.com/snippets/featured/expanding-search-button-in-css). Big thanks to NoelDavies for creating it.

@@ -13,3 +13,9 @@ REFACTOR IT FOR THE LOVE OF OH MY GOODNESS.
 
 ###Styling
 - General Styling. (maybe let backgroundColor change based on temps, maybe let the background of the page in general change depending on conditions.)
+
+
+
+###Credits
+
+I did grab the awesome bootstrap search bars rollover feature from [here](http://bootsnipp.com/snippets/featured/expanding-search-button-in-css)

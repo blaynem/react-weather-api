@@ -92,7 +92,7 @@ var WeatherApp = React.createClass({
     }
 
     return (
-      <div className={this.props.appSize}>
+      <div className="col-xs-offset-3 col-xs-6">
         <div className="panel panel-default">
             <WeatherToday
               headingColor={this.props.appColor}

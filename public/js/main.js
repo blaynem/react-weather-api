@@ -21055,7 +21055,7 @@ var WeatherApp = React.createClass({
 
     return React.createElement(
       'div',
-      { className: this.props.appSize },
+      { className: 'col-xs-offset-3 col-xs-6' },
       React.createElement(
         'div',
         { className: 'panel panel-default' },
@@ -21426,9 +21426,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
-//appSize can be changed by using bootstrap sizes ex: col-sm-12, etc.
 //appColor can be changed by simply replacing with a color of your choice.
-ReactDOM.render(React.createElement(WeatherApp, { appSize: 'col-xs-4', appColor: '#ec4444', startCity: 'fargo' }), document.getElementById('weather'));
+ReactDOM.render(React.createElement(WeatherApp, { appColor: '#ec4444', startCity: 'fargo' }), document.getElementById('weather'));
 
 },{"./components/WeatherApp.jsx":180,"react":177,"react-dom":26}],184:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');

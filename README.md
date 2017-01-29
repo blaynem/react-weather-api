@@ -1,6 +1,8 @@
 #React Weather component from API
 
-Created a react component using an API from OpenWeatherMap.org
+Created a react component using an API from OpenWeatherMap.org.
+
+You can view it in action on my portfolio website: http://blaynemarjama.surge.sh/#/portfolio
 
 #To try it out
 
@@ -21,5 +23,4 @@ REFACTOR IT FOR THE LOVE OF OH MY GOODNESS.
 
 
 ###Credits
-
 I did grab the awesome bootstrap search bars rollover feature from [here](http://bootsnipp.com/snippets/featured/expanding-search-button-in-css). Big thanks to NoelDavies for creating it.
